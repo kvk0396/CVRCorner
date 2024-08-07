@@ -1,22 +1,44 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-
+/* eslint-disable no-unused-vars */
+import React, { useContext, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import {URL} from '../url';
+import SignUp from './SignUp';
+import api from '../utils/api'
+import { UserContext } from '../Context/UserContext';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const {setUser}=useContext(UserContext)
+  const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
-    // Handle form submission logic here
-    console.log('Email:', email);
-    console.log('Password:', password);
-  };
+    try {
+      const res = await axios.post(`${URL}api/auth/login`, { email: email.toLowerCase(), password });
+      console.log(res.data);
+      localStorage.setItem('token', res.data.token); 
+      
+      setUser(res.data);
+      navigate("/home");
+  }
+  catch (err) {
+        if (err.response && err.response.data) {
+            setError(err.response.data);
+        } else {
+            setError('Error occurred while logging in');
+        }
+        console.error("Error:", err);
+    }
+};
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4 sm:p-6 lg:p-8">
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm">
         <h2 className="text-2xl font-bold mb-4 text-center">Login</h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleLogin}>
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
               Email
@@ -43,6 +65,7 @@ const Login = () => {
               placeholder="Enter your password"
             />
           </div>
+          {error && <p className="text-red-500 text-xs">{error}</p>}
           <div className="flex items-center justify-between">
             <button
               type="submit"

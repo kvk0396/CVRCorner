@@ -13,7 +13,7 @@ router.put('/:id', verifyToken,updatePost);
 router.delete('/:id',verifyToken ,deletePost);
 
 // Get Post details
-router.get('/:id',getPostDetails);
+router.get('/post/:id',getPostDetails);
 
 // Get Posts
 router.get('/', getAllPosts);

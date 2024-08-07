@@ -8,6 +8,8 @@ const verifyToken = require('../Middlewares/authMiddleware')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken') */
 
+const jwt = require('jsonwebtoken')
+require('dotenv').config();
 
 //Register
 
@@ -18,6 +20,25 @@ router.post('/login',login);
 
 
 //LOGOUT 
-router.get("/logout",verifyToken,logout)
+router.post("/logout",logout)
+
+
+
+//Refetch user
+router.get("/refetch",verifyToken, (req, res) => {
+    const authHeader = req.headers.authorization;
+    const token = authHeader && authHeader.split(' ')[1];
+    //console.log(token)
+    if (!token) {
+        return res.status(401).json({ message: 'No token provided.' });
+    }
+
+    jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+        if (err) {
+            return res.status(403).json({ message: 'Failed to authenticate token.' });
+        }
+        res.status(200).json(decoded);
+    });
+});
 
 module.exports = router;

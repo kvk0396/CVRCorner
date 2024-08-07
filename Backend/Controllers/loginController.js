@@ -13,13 +13,13 @@ const login = async(req,res)=>{
         if(!match){
             return res.status(401).json("Wrong credentials")
         }
-        const token = jwt.sign({id:user._id},process.env.SECRET_KEY,{expiresIn:"1d"})
-        const {password,...info} = user._doc
-        res.cookie("token",token).status(200).json(info);
+        const token = jwt.sign({_id: user._id, username: user.username, email: user.email }, process.env.SECRET_KEY, { expiresIn: "1h" });
+        const { password, ...info } = user._doc;
+        res.status(200).json({ ...info, token });
     }
     catch(err){
         res.status(500).json(err);
     }
 }
 
-module.exports = login;
+module.exports = login; 
