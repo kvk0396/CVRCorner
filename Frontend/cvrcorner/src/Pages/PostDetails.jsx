@@ -6,6 +6,8 @@ import Comment from '../Components/Comment';
 import Loader from '../Components/Loader'
 import { BiEdit } from 'react-icons/bi';
 import { MdDelete } from 'react-icons/md';
+import { MdBookmark } from 'react-icons/md';
+
 import { useNavigate, useParams } from 'react-router-dom';
 import api from '../utils/api';
 import axios from 'axios';
@@ -18,6 +20,7 @@ const PostDetails = () => {
   const [post,setPost]=useState({});
   const [comments,setComments]=useState([]);
   const [comment,setComment]=useState("")
+  const [isBookmarked, setIsBookmarked] = useState(false);
   const {user} = useContext(UserContext)
   const [loader,setLoader] = useState(false);
   const Navigate = useNavigate();
@@ -34,6 +37,27 @@ const PostDetails = () => {
     }
     
   }
+
+  const handleBookmark = async () => {
+    try {
+      if (isBookmarked) {
+        await api.post(`/users/removeBookmark/${postId}`);
+      } else {
+        await api.post(`/users/addBookmark/${postId}`);
+      }
+      setIsBookmarked(!isBookmarked);
+    } catch (err) {
+      console.error('Error in addBookmark:', err);
+      //res.status(500).json({ message: 'Internal Server Error', error: err.message });
+  }
+  };
+
+  useEffect(() => {
+    fetchPost();
+    if (user && Array.isArray(user.bookmarks) && user.bookmarks.includes(postId)) {
+      setIsBookmarked(true);
+    }
+  }, [postId, user]);
 
   const handleDelete = async()=>{
     try {
@@ -85,13 +109,25 @@ const PostDetails = () => {
       {loader?<div className='h-[80vh] flex justify-center items-center w-full'><Loader/></div>:<div className="px-8 md:px-[200px] mt-8">
         {/* Post Title and Actions */}
         <header className="flex justify-between items-center mb-4">
-          <h1 className="text-2xl font-bold text-black md:text-3xl">{post.title}</h1>
-          {user?._id===post.userId &&  
+        <h1 className="text-2xl font-bold text-black md:text-3xl">{post.title}</h1>
+        {user?._id === post.userId && (
           <div className="flex items-center space-x-2">
-            <button className="cursor-pointer" onClick={()=>Navigate("/edit/"+postId)} aria-label="Edit post"><BiEdit /></button>
-            <button className="cursor-pointer" onClick={handleDelete} aria-label="Delete post"><MdDelete /></button>
-          </div>}
-        </header>
+            <button 
+              className="cursor-pointer" 
+              aria-label="Bookmark post" 
+              onClick={handleBookmark}
+            >
+              <MdBookmark className={isBookmarked ? "text-yellow-500" : "text-gray-500"} />
+            </button>
+            <button className="cursor-pointer" onClick={() => Navigate("/edit/" + postId)} aria-label="Edit post">
+              <BiEdit />
+            </button>
+            <button className="cursor-pointer" onClick={handleDelete} aria-label="Delete post">
+              <MdDelete />
+            </button>
+          </div>
+        )}
+      </header>
 
         {/* Post Author and Date */}
         <div className="flex items-center justify-between text-gray-600 mb-4">

@@ -29,7 +29,10 @@ app.use("/uploads",express.static(path.join(__dirname,"/uploads")))
 app.use(cors({origin:"http://localhost:5173",credentials:true}))
 app.use(cookieParser())
 app.use('/api/auth',authRoute)
-app.use('/api/users',userRoute)
+app.use('/api/users',(req,res,next) => {
+    console.log(req.path)
+    next()
+},userRoute)
 app.use('/api/posts',postRoute)
 app.use('/api/comments',commentRoute)
 

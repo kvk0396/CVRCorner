@@ -2,6 +2,7 @@ const User = require('../models/userModel');
 const Post = require('../models/postModel');
 const Comment = require('../models/commentModel');
 const bcrypt = require('bcrypt'); 
+const mongoose = require('mongoose');
 
 const updateUser = async (req, res) => {
     try {
@@ -56,4 +57,61 @@ const getUser = async (req, res) => {
     }
 }
 
-module.exports = { updateUser, deleteUser, getUser };
+// Add a bookmark
+
+const addBookmark = async (req, res) => {
+    try {
+        const user = await User.findById(req.userId);
+        const postId = mongoose.Types.ObjectId(req.params.postId); // Cast to ObjectId
+
+        if (!user.bookmarks.includes(postId)) {
+            user.bookmarks.push(postId);
+            await user.save();
+            return res.status(200).json("Post bookmarked!");
+        }
+        res.status(400).json("Post already bookmarked!");
+    } catch (err) {
+        console.error('Error in addBookmark:', err.message);
+        console.error('Stack Trace:', err.stack);
+        res.status(500).json({ message: 'Internal Server Error', error: err.message });
+    }
+};
+
+const removeBookmark = async (req, res) => {
+    try {
+        const user = await User.findById(req.userId);
+        const postId = mongoose.Types.ObjectId(req.params.postId); // Cast to ObjectId
+
+        if (user.bookmarks.includes(postId)) {
+            user.bookmarks.pull(postId);
+            await user.save();
+            return res.status(200).json("Post removed from bookmarks!");
+        }
+        res.status(400).json("Post not found in bookmarks!");
+    } catch (err) {
+        console.error('Error in removeBookmark:', err.message);
+        console.error('Stack Trace:', err.stack);
+        res.status(500).json({ message: 'Internal Server Error', error: err.message });
+    }
+};
+
+
+const getAllBookmarks = async (req, res) => {
+    console.log("hello")
+    try {
+        const user = await User.findById(req.userId).populate('bookmarks');
+        console.log(user)
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.status(200).json(user.bookmarks);
+    } catch (err) {
+        console.error('Error in getAllBookmarks:', err.message);
+        console.error('Stack Trace:', err.stack);
+        res.status(500).json({ message: 'Internal Server Error', error: err.message });
+    }
+};
+
+
+
+module.exports = { updateUser, deleteUser, getUser , addBookmark , removeBookmark , getAllBookmarks};

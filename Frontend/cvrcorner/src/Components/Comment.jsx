@@ -6,6 +6,7 @@ import { useContext } from 'react';
 const Comment = ({comment})=>{
 
   const {user}=useContext(UserContext)
+  //console.log(user);
   const handleDelete = async(id)=>{
     try{
       await api.delete(`/comments/${id}`)
@@ -21,7 +22,11 @@ const Comment = ({comment})=>{
           
           <div className="bg-gray-200 rounded-lg p-4 mb-4">
             <div className="flex justify-between items-center">
-              <h4 className="font-bold text-gray-600">@{comment.author}</h4>
+              {
+                user?._id===comment?.userId?
+                <h4 className="font-bold text-gray-600">@{user.username}</h4>:""
+              }
+              
               <div className="flex space-x-4 text-gray-500 text-sm">
               <span>{new Date(comment.updatedAt).toString().slice(0,15)}</span>
               <span>{new Date(comment.updatedAt).toString().slice(16,21)}</span>

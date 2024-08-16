@@ -19,7 +19,12 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-  }
+  },
+  bookmarks: {
+    type: [mongoose.Schema.Types.ObjectId], // Assuming IDs are ObjectId
+    ref: 'Post',
+    required: false,
+},
 }, { timestamps: true });
 
 userSchema.index({ rollNo: 1 }, { unique: true, collation: { locale: 'en', strength: 2 } });
