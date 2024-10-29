@@ -32,7 +32,7 @@ const SignUp = () => {
 
     // Validate password length
     if (password.length < 8) {
-      setError('Password must be atleast 8 characters long');
+      setError('Password must be at least 8 characters long');
       return;
     }
 
@@ -58,12 +58,12 @@ const SignUp = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4 sm:p-6 lg:p-8">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm">
-        <h2 className="text-2xl font-bold mb-4 text-center">Sign Up</h2>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-black to-blue-900 p-4 sm:p-6 lg:p-8">
+      <div className="bg-gradient-to-r from-black to-blue-900 p-8 rounded-lg shadow-lg w-full max-w-md">
+        <h2 className="text-3xl font-bold mb-6 text-center text-white">Create Account</h2>
         <form onSubmit={handleSignUp}>
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+            <label className="block text-white text-sm font-bold mb-2" htmlFor="email">
               Email
             </label>
             <input
@@ -71,25 +71,25 @@ const SignUp = () => {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-blue-600"
               placeholder="Enter your email"
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
-              User Name
+            <label className="block text-white text-sm font-bold mb-2" htmlFor="username">
+              Username
             </label>
             <input
               type="text"
               id="username"
               value={username}
               onChange={(e) => setUserName(e.target.value)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-blue-600"
               placeholder="Enter your username"
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="rollNo">
+            <label className="block text-white text-sm font-bold mb-2" htmlFor="rollNo">
               Roll No
             </label>
             <input
@@ -97,12 +97,12 @@ const SignUp = () => {
               id="rollNo"
               value={rollNo}
               onChange={(e) => setRollNo(e.target.value)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              placeholder="Enter your RollNo"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-blue-600"
+              placeholder="Enter your roll number"
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+            <label className="block text-white text-sm font-bold mb-2" htmlFor="password">
               Password
             </label>
             <input
@@ -110,12 +110,12 @@ const SignUp = () => {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-blue-600"
               placeholder="Enter your password"
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="confirmPassword">
+            <label className="block text-white text-sm font-bold mb-2" htmlFor="confirmPassword">
               Confirm Password
             </label>
             <input
@@ -123,15 +123,15 @@ const SignUp = () => {
               id="confirmPassword"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-blue-600"
               placeholder="Confirm your password"
             />
           </div>
-          {error && <h3 className="text-red-500 text-s">{error}</h3>}
+          {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
           <div className="flex items-center justify-between">
             <button
               type="submit"
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-blue-600"
             >
               Sign Up
             </button>

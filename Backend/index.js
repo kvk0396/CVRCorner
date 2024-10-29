@@ -29,10 +29,7 @@ app.use("/uploads",express.static(path.join(__dirname,"/uploads")))
 app.use(cors({origin:"http://localhost:5173",credentials:true}))
 app.use(cookieParser())
 app.use('/api/auth',authRoute)
-app.use('/api/users',(req,res,next) => {
-    console.log(req.path)
-    next()
-},userRoute)
+app.use('/api/users',userRoute)
 app.use('/api/posts',postRoute)
 app.use('/api/comments',commentRoute)
 
@@ -50,7 +47,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 app.post('/api/upload', upload.single('file'), (req, res) => {
-    console.log(req.body)
+    //console.log(req.body)
     res.status(200).json("Image uploaded successfully");
 });
 

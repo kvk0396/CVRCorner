@@ -16,29 +16,16 @@ const MyBlogs = () => {
     const fetchPosts = async () => {
         setLoader(true);
         try {
-            // const res = await api.get(`/users/getAllBookmarks/`);
-            // console.log(res.data);
+            const res = await api.get(`/users/getAllBookmarks/`);
+            console.log(res.data);
 
-            // if (res.data.length === 0) {
-            //     setNoResults(true);
-            // } else {
-            //     setPosts(res.data); // res.data now contains post details
-            //     setNoResults(false);
-            // }
-            const res = await fetch(`http://localhost:5000/api/users/getAllBookmarks/`,{
-                method : 'GET',
-                headers : {
-                    'Authorization' : `Bearer ${localStorage.getItem('token')}`
-                }
-            });
-            console.log(res.json());
-
-            // if (res.data.length === 0) {
-            //     setNoResults(true);
-            // } else {
-            //     setPosts(res.data); // res.data now contains post details
-            //     setNoResults(false);
-            // }
+            if (res.data.length === 0) {
+                setNoResults(true);
+            } else {
+                setPosts(res.data); // res.data now contains post details
+                setNoResults(false);
+            }
+           
         } catch (err) {
             console.error("Error fetching bookmarks:", err.message);
         } finally {

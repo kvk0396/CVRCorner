@@ -3,6 +3,7 @@ const Post = require('../models/postModel');
 const Comment = require('../models/commentModel');
 const bcrypt = require('bcrypt'); 
 const mongoose = require('mongoose');
+const Posts = require('../models/postModel');
 
 const updateUser = async (req, res) => {
     try {
@@ -62,7 +63,7 @@ const getUser = async (req, res) => {
 const addBookmark = async (req, res) => {
     try {
         const user = await User.findById(req.userId);
-        const postId = mongoose.Types.ObjectId(req.params.postId); // Cast to ObjectId
+        const postId = req.params.postId; // Cast to ObjectId
 
         if (!user.bookmarks.includes(postId)) {
             user.bookmarks.push(postId);
@@ -78,9 +79,10 @@ const addBookmark = async (req, res) => {
 };
 
 const removeBookmark = async (req, res) => {
+    
     try {
         const user = await User.findById(req.userId);
-        const postId = mongoose.Types.ObjectId(req.params.postId); // Cast to ObjectId
+        const postId = req.params.postId; // Cast to ObjectId
 
         if (user.bookmarks.includes(postId)) {
             user.bookmarks.pull(postId);
@@ -95,12 +97,50 @@ const removeBookmark = async (req, res) => {
     }
 };
 
+const addLike = async (req, res) => {
+    //console.log("inside")
+    try {
+        const user = await User.findById(req.userId);
+        //console.log(typeof req.params)
+        const postId = req.params.postId; // Cast to ObjectId
+        //console.log(user);
+        console.log(postId);
+        if (!user.likes.includes(postId)) {
+            user.likes.push(postId);
+            await user.save();
+            return res.status(200).json("Post Liked!");
+        }
+        res.status(400).json("Post already Liked!");
+    } catch (err) {
+        console.error('Error in AddLike:', err.message);
+        console.error('Stack Trace:', err.stack);
+        res.status(500).json({ message: 'Internal Server Error', error: err.message });
+    }
+};
+
+const removeLike = async (req, res) => {
+    
+    try {
+        const user = await User.findById(req.userId);
+        const postId = req.params.postId; // Cast to ObjectId
+        console.log(user)
+        if (user.likes.includes(postId)) {
+            user.likes.pull(postId);
+            await user.save();
+            return res.status(200).json("Post removed from likes!");
+        }
+        res.status(400).json("Post not found in likes!");
+    } catch (err) {
+        console.error('Error in removeLike:', err.message);
+        console.error('Stack Trace:', err.stack);
+        res.status(500).json({ message: 'Internal Server Error', error: err.message });
+    }
+};
 
 const getAllBookmarks = async (req, res) => {
-    console.log("hello")
     try {
         const user = await User.findById(req.userId).populate('bookmarks');
-        console.log(user)
+        //console.log(user)
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -114,4 +154,4 @@ const getAllBookmarks = async (req, res) => {
 
 
 
-module.exports = { updateUser, deleteUser, getUser , addBookmark , removeBookmark , getAllBookmarks};
+module.exports = { updateUser, deleteUser, getUser , addBookmark , removeBookmark,  getAllBookmarks , addLike, removeLike,};

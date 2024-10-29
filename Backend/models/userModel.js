@@ -22,9 +22,16 @@ const userSchema = new mongoose.Schema({
   },
   bookmarks: {
     type: [mongoose.Schema.Types.ObjectId], // Assuming IDs are ObjectId
-    ref: 'Post',
+    ref: 'Posts',
+    default : [],
     required: false,
-},
+  },
+  likes: {
+    type: [mongoose.Schema.Types.ObjectId], // Assuming IDs are ObjectId
+    ref: 'Posts',
+    default : [],
+    required: false,
+  },
 }, { timestamps: true });
 
 userSchema.index({ rollNo: 1 }, { unique: true, collation: { locale: 'en', strength: 2 } });

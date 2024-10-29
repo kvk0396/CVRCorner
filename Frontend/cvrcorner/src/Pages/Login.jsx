@@ -2,82 +2,114 @@
 import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import {URL} from '../url';
-import SignUp from './SignUp';
-import api from '../utils/api'
+import { URL } from '../url';
+import api from '../utils/api';
+import loginLogo from '../assets/CVRCDark.mp4'
 import { UserContext } from '../Context/UserContext';
+
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const {setUser}=useContext(UserContext)
+  const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
-      const res = await axios.post(`${URL}api/auth/login`, { email: email.toLowerCase(), password });
+      const res = await axios.post(`${URL}api/auth/login`, {
+        email: email.toLowerCase(),
+        password
+      });
       console.log(res.data);
-      localStorage.setItem('token', res.data.token); 
-      
-      setUser(res.data);
-      navigate("/home");
-  }
-  catch (err) {
-        if (err.response && err.response.data) {
-            setError(err.response.data);
-        } else {
-            setError('Error occurred while logging in');
-        }
-        console.error("Error:", err);
-    }
-};
+      localStorage.setItem('token', res.data.token);
 
+      setUser(res.data);
+      navigate('/home');
+    } catch (err) {
+      if (err.response && err.response.data) {
+        setError(err.response.data);
+      } else {
+        setError('Error occurred while logging in');
+      }
+      console.error('Error:', err);
+    }
+  };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4 sm:p-6 lg:p-8">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm">
-        <h2 className="text-2xl font-bold mb-4 text-center">Login</h2>
-        <form onSubmit={handleLogin}>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              placeholder="Enter your email"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              placeholder="Enter your password"
-            />
-          </div>
-          {error && <p className="text-red-500 text-xs">{error}</p>}
-          <div className="flex items-center justify-between">
-            <button
-              type="submit"
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+    <div className="sm:items-center min-h-screen bg-gradient-to-r from-black via-blue-800 to-black flex justify-center items-center">
+      {/* Left Side - Background Video */}
+      <div className="lg:flex w-1/2 h-full relative ">
+
+      <div className='invisible lg:visible from-black via-blue-800 to-blue-700  h-320 w-320 ml-32 '>
+      <video
+          autoPlay
+          loop
+          muted
+          className="object-cover rounded-lg "
+        >
+          <source src={loginLogo} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+        
+        {/* <div className="absolute bottom-10 left-10 text-white">
+          {/* <h1 className="text-4xl font-bold">AI Generative</h1>
+          <p className="text-lg">Anything you can Imagine</p>
+          <p>Generate any type of art with CVR Corner</p> 
+        </div> */}
+      </div>
+
+      {/* Right Side - Login Form */}
+      <div className=" lg:w-1/2 w-full h-full flex flex-col justify-center items-center">
+        <div className="bg-gradient-to-r from-blue-800 to-black p-20 rounded-lg shadow-lg w-full max-w-md">
+          <h2 className="text-white text-3xl mb-6 text-center">Welcome Back!</h2>
+          <form onSubmit={handleLogin} className="space-y-6">
+            <div>
+              <label className="text-white block mb-1" htmlFor="email">
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-4 py-2 text-black bg-white-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+                placeholder="Enter your email"
+              />
+            </div>
+            <div>
+              <label className="text-white block mb-1" for="password">
+                Password
+              </label>
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-2 text-black bg-white-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+                placeholder="Enter your password"
+              />
+            </div>
+            {error && <p className="text-red-500 text-xs">{error}</p>}
+            <div className="flex items-center justify-between">
+              <button
+                type="submit"
+                className="w-full bg-blue-900 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
+              >
+                Login
+              </button>
+            </div>
+          </form>
+          <div className="mt-4 text-center">
+            <Link
+              to="/signup"
+              className="text-blue-400 hover:text-blue-500 text-sm font-medium"
             >
-              Login
-            </button>
-            <Link to="/signup" className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800">
-              Sign Up
+              Don't have an account? Sign Up
             </Link>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );

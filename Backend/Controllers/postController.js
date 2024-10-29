@@ -55,21 +55,28 @@ const getPostDetails =  async (req, res) => {
 }
 
 const getAllPosts = async (req, res) => {
-    const query = req.query
+    const query = req.query;
 
     try {
-        const searchFilter={
-            title : {$regex:query.search , $options:"i"}
+        const searchFilter = {
+            $or: [
+                { title: { $regex: query.search, $options: "i" } }, 
+                { categories: { $regex: query.search, $options: "i" } } 
+            ]
+        };
+
+        const posts = await Post.find(query.search ? searchFilter : {});
+
+        if (posts.length === 0) {
+            return res.status(404).json("No posts found");
         }
-        const posts = await Post.find(query.search?searchFilter:null);
-        if (!posts) {
-            return res.status(404).json("No Posts exists");
-        }
+
         return res.status(200).json(posts);
     } catch (err) {
         return res.status(500).json(err);
     }
-}
+};
+
 
 const getUserPosts = async (req, res) => {
     try {

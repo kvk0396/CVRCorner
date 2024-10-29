@@ -2,9 +2,10 @@ import { BiEdit } from 'react-icons/bi';
 import { MdDelete } from 'react-icons/md';
 import api from '../utils/api'
 import { UserContext } from '../Context/UserContext';
-import { useContext } from 'react';
-const Comment = ({comment})=>{
+import { useContext, useState } from 'react';
+const Comment =  ({comment})=>{
 
+  const [author,setAuthor] = useState({})
   const {user}=useContext(UserContext)
   //console.log(user);
   const handleDelete = async(id)=>{
@@ -16,16 +17,35 @@ const Comment = ({comment})=>{
       console.log(err);
     }
   }
+  const userId = comment.userId ;
+  //console.log(comment);
+  async function getUser() {
+    try {
+      const res = await api.get(`/users/${userId}`);
+      return res.data; 
+    } catch (err) {
+      console.log(err);
+      return null;
+    }
+  }
+  
+  async function fetchAuthor() {
+    const author = await getUser();
+    setAuthor(author)
+    //console.log(author); 
+  }
+  
+  fetchAuthor();
     return(
         <div>
         <section className="mt-8">
           
           <div className="bg-gray-200 rounded-lg p-4 mb-4">
             <div className="flex justify-between items-center">
-              {
-                user?._id===comment?.userId?
-                <h4 className="font-bold text-gray-600">@{user.username}</h4>:""
-              }
+              
+                {/* //user?._id===comment?.userId? */}
+                <h4 className="font-bold text-gray-600">@{author.username}</h4>
+              
               
               <div className="flex space-x-4 text-gray-500 text-sm">
               <span>{new Date(comment.updatedAt).toString().slice(0,15)}</span>
