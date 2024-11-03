@@ -27,32 +27,40 @@ const PostDetails = () => {
         }
     }, [user, postId]);
 
+    
     const fetchPost = async () => {
         try {
+            
             const response = await api.get(`/posts/post/${postId}`);
             setPost(response.data);
             setLoader(false);
-
+            //console.log(typeof postId)
             let flagLike = false;
             let flagBook = false;
             user.bookmarks.map(({ _id }) => {
-                if (_id === postId) {
+                console.log(typeof _id)
+                if (_id == postId) {
                     flagBook = true;
                 }
             });
-            user.likes.map(({ _id }) => {
-                
-                if (_id === postId) {
-                    console.log("push")
+            //console.log(typeof postId)
+            //console.log(user)
+            user.likes.map((_id) => {
+                //console.log(_id)
+                //console.log(typeof _id)
+                //console.log(typeof postId)
+                if (_id === (postId)) {
+                    //console.log("push")
                     flagLike = true;
                 }
             });
             if (user && flagBook) {
                 setIsBookmarked(true);
             }
-            // if (user && flagLike) {
-            //     setIsLiked(true);
-            // }
+            if (user && flagLike) {
+                setIsLiked(true);
+                //window.location.reload(true);
+            }
         } catch (error) {
             console.error('Error fetching post:', error);
             setLoader(true);
@@ -70,17 +78,17 @@ const PostDetails = () => {
         }
     };
 
-    // const handleLike = async () => {
-    //     let route = isLiked ? "removeLike" : "addLike";
-    //     try {
-    //         //console.log(typeof postId)
-    //         await api.post(`/users/${route}/${postId}`);
-    //         setIsLiked(!isLiked);
-    //         window.location.reload(true);
-    //     } catch (err) {
-    //         console.error('Error in handleLike:', err);
-    //     }
-    // }
+    const handleLike = async () => {
+        let route = isLiked ? "removeLike" : "addLike";
+        try {
+            //console.log(typeof postId)
+            await api.post(`/users/${route}/${postId}`);
+            setIsLiked(!isLiked);
+            window.location.reload(true);
+        } catch (err) {
+            console.error('Error in handleLike:', err);
+        }
+    }
     
 
     const handleDelete = async () => {
@@ -112,8 +120,8 @@ const PostDetails = () => {
     };
     
 
-   const userId = post.userId ;
-   console.log(userId)
+   //const userId = post.userId ;
+   //console.log(userId)
 //   //console.log(comment);
 //   async function getUser() {
 //     try {
@@ -156,9 +164,9 @@ const PostDetails = () => {
                                     </button>
                                 </>
                             )}
-                            {/* <button onClick={handleLike} className="text-xl cursor-pointer">
+                            <button onClick={handleLike} className="text-xl cursor-pointer">
                                 <MdThumbUp className={isLiked ? "text-blue-500" : "text-gray-500"} />
-                            </button> */}
+                            </button>
                             <button onClick={handleBookmark} className="text-xl cursor-pointer">
                                 <MdBookmark className={isBookmarked ? "text-yellow-500" : "text-gray-500"} />
                             </button>

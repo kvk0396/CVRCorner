@@ -63,11 +63,14 @@ const getUser = async (req, res) => {
 const addBookmark = async (req, res) => {
     try {
         const user = await User.findById(req.userId);
+        console.log(typeof req.params.postId)
         const postId = req.params.postId; // Cast to ObjectId
-
+        //console.log(typeof postId)
         if (!user.bookmarks.includes(postId)) {
             user.bookmarks.push(postId);
             await user.save();
+            // console.log("BoolMark")
+            // console.log(user)
             return res.status(200).json("Post bookmarked!");
         }
         res.status(400).json("Post already bookmarked!");
@@ -104,10 +107,12 @@ const addLike = async (req, res) => {
         //console.log(typeof req.params)
         const postId = req.params.postId; // Cast to ObjectId
         //console.log(user);
-        console.log(postId);
+        //console.log(typeof postId);
         if (!user.likes.includes(postId)) {
             user.likes.push(postId);
             await user.save();
+            // console.log("Like")
+            // console.log(user);
             return res.status(200).json("Post Liked!");
         }
         res.status(400).json("Post already Liked!");
@@ -122,8 +127,10 @@ const removeLike = async (req, res) => {
     
     try {
         const user = await User.findById(req.userId);
+
         const postId = req.params.postId; // Cast to ObjectId
-        console.log(user)
+        console.log(typeof postId)
+        //console.log(user)
         if (user.likes.includes(postId)) {
             user.likes.pull(postId);
             await user.save();

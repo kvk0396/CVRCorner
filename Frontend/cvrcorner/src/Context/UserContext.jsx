@@ -16,6 +16,7 @@ export function UserContextProvider({ children }) {
         try {
             const response = await api.get("/auth/refetch");
             setUser(response.data);
+            //console.log(response.data)
         } catch (error) {
             console.error('Error fetching user:', error);
             setUser(null);  // Ensure user is set to null if the fetch fails

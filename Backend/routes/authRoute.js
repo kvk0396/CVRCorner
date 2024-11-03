@@ -3,6 +3,7 @@ const router = express.Router()
 const login = require('../Controllers/loginController')
 const register = require('../Controllers/registerController')
 const logout = require('../Controllers/logoutController')
+const {sendOtp , verifyOtp} = require('../Controllers/OTPController')
 const verifyToken = require('../Middlewares/authMiddleware')
 const User = require('../models/userModel'); 
 
@@ -25,6 +26,9 @@ router.post('/login',login);
 router.post("/logout",logout)
 
 
+router.post("/sendotp",sendOtp)
+
+router.post("/verifyotp",verifyOtp)
 
 //Refetch user
 router.get("/refetch", verifyToken, async (req, res) => {
@@ -36,7 +40,7 @@ router.get("/refetch", verifyToken, async (req, res) => {
         }
         
         // Send the full user data including bookmarks to the frontend
-        console.log(user);
+        //console.log(user);
         res.status(200).json(user);
     } catch (error) {
         console.error('Error fetching user data:', error);
