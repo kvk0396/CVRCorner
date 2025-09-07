@@ -61,37 +61,4 @@ CVR Corner allows students to share ideas, write blogs, interact with peers, and
 
 ---
 
-## 📂 Project Structure
-CVR-Corner/
-│
-├── backend/
-│   ├── Controllers/   # Auth, User, Post, Comment, OTP controllers
-│   ├── Models/        # Mongoose models (User, Post, Comment, OTP)
-│   ├── Routes/        # Express routes for API endpoints
-│   ├── Middlewares/   # Authentication middleware (JWT)
-│   └── server.js      # Entry point
-│
-├── frontend/
-│   ├── src/
-│   │   ├── Components/   # Navbar, Footer, Loader, etc.
-│   │   ├── Pages/        # Login, Signup, Home, Profile, Bookmarks, PostDetails
-│   │   ├── Context/      # User context for global auth state
-│   │   └── utils/        # Axios instance (api.js)
-│   └── package.json
-│
-└── README.md
 
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-- Node.js & npm installed  
-- MongoDB running locally or Atlas cluster  
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/your-username/cvr-corner.git
-   cd cvr-corner
