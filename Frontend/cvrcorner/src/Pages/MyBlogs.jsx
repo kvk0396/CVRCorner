@@ -40,11 +40,18 @@ const MyBlogs = () => {
     return (
         <div>
             <Navbar />
+            
             <div className="px-4 mb-4 md:px-[200px] min-h-[80vh]">
+            <div className="flex flex-row align-middle ">
+                <h1 className="text-center text-xl py-4 font-extrabold font-serif">My Bookmarks</h1>
+            </div>
                 {loader ? (
                     <div className="h-[40vh] flex justify-center items-center"><Loader /></div>
                 ) : (
-                    !noResults ? (
+                    !noResults ? 
+                    
+                    (
+                        
                         posts.map((post) => (
                             <div key={post._id}>
                                 <Link to={user ? `/posts/post/${post._id}` : "/login"}>

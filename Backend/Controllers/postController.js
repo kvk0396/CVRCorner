@@ -65,7 +65,7 @@ const getAllPosts = async (req, res) => {
             ]
         };
 
-        const posts = await Post.find(query.search ? searchFilter : {});
+        const posts = await Post.find(query.search ? searchFilter : {}).sort({ createdAt: -1 });
 
         if (posts.length === 0) {
             return res.status(404).json("No posts found");
