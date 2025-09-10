@@ -6,21 +6,20 @@ const Comment = require('../models/commentModel');
 const createComment = async (req, res) => {
     try {
         const postExists = await Post.findById(req.body.postId);
-        if (!postExists) {
-            return res.status(404).json("Post not found");
+        if (!postExists) return res.status(404).json("Post not found");
+
+        if (req.userId !== req.body.userId) {
+            return res.status(403).json("Unauthorized user ID");
         }
 
-        // Ensure the user making the request is logged in and authorized
-        if (req.userId !== req.body.userId) {
-            return res.status(403).json("You are not authorized to comment with this user ID");
-        }
-        
         const newComment = new Comment({
             comment: req.body.comment,
             author: req.body.author,
             postId: req.body.postId,
-            userId: req.userId  // Use req.userId from the token
+            userId: req.userId,
+            parentId: req.body.parentId || null,  // Optional parentId for replies
         });
+
         const savedComment = await newComment.save();
         res.status(200).json(savedComment);
     } catch (err) {
@@ -67,8 +66,16 @@ const deleteComment = async (req, res) => {
 // Get comments for a post
 const getPostComments = async (req, res) => {
     try {
-        const comments = await Comment.find({ postId: req.params.postId });
-        res.status(200).json(comments);
+        const comments = await Comment.find({ postId: req.params.postId, parentId: null });
+        const replies = await Comment.find({ postId: req.params.postId, parentId: { $ne: null } });
+
+        // Group replies under their parent comments
+        const commentsWithReplies = comments.map(comment => {
+            comment._doc.replies = replies.filter(reply => reply.parentId.toString() === comment._id.toString());
+            return comment;
+        });
+
+        res.status(200).json(commentsWithReplies);
     } catch (err) {
         res.status(500).json(err);
     }

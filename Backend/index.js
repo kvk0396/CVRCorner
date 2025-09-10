@@ -11,6 +11,7 @@ const commentRoute = require('./routes/commentRoute');
 const cookieParser = require('cookie-parser');
 const app = express()
 const PORT = process.env.PORT || 5000;
+const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:5173";
 //Database connection
 const connectDB = async()=>{
     try{
@@ -26,7 +27,7 @@ const connectDB = async()=>{
 dotenv.config();
 app.use(express.json());
 app.use("/uploads",express.static(path.join(__dirname,"/uploads")))
-app.use(cors({origin:"http://localhost:5173",credentials:true}))
+app.use(cors({origin:CLIENT_URL,credentials:true}))
 app.use(cookieParser())
 app.use('/api/auth',authRoute)
 app.use('/api/users',userRoute)

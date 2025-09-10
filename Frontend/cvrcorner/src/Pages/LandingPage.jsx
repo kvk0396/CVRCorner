@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Navigate, useNavigate, Link } from "react-router-dom";
 import { FaTwitter, FaInstagram, FaFacebook, FaYoutube , } from "react-icons/fa";
 import logoD from '../assets/logoDark.png'
-
+import img1 from '../assets/8741.jpg'
+import img2 from '../assets/19762.jpg'
+import img3 from '../assets/2467944.jpg'
 const images = [
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSxwgMgvi-xh6oz6IHllR_NWtnG_solljH_w&s",
-    "https://www.allschoolscolleges.com/images/college_photo/461477397018.jpg",
-    "https://www.allschoolscolleges.com/images/college_photo/301477397018.jpg",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcGfEqEXMg9ZXzEf2U7yk55dyLb_0T_HGAXQ&s",
+    img1,
+    img2,
+    img3
 ];
 
 const LandingPage = () => {
@@ -22,7 +23,7 @@ const LandingPage = () => {
     }, []);
 
     return (
-        <div className="min-h-screen bg-gradient-to-r from-gray-100 to-blue-800 flex flex-col justify-center items-center px-6 py-8">
+        <div className="min-h-screen bg-white flex flex-col justify-center items-center px-6 py-8">
             {/* Header Section */}
             <header className="flex  items-center justify-between w-full max-w-5xl">
                 <div className="flex items-center">
