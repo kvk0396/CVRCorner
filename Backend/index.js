@@ -27,7 +27,23 @@ const connectDB = async()=>{
 dotenv.config();
 app.use(express.json());
 app.use("/uploads",express.static(path.join(__dirname,"/uploads")))
-app.use(cors({origin:CLIENT_URL,credentials:true}))
+//app.use(cors({origin:CLIENT_URL,credentials:true}))
+const allowedOrigins = [
+  "http://localhost:5173",
+  /\.vercel\.app$/
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.some(o => (typeof o === "string" ? o === origin : o.test(origin)))) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true
+}));
+
 app.use(cookieParser())
 app.use('/api/auth',authRoute)
 app.use('/api/users',userRoute)
